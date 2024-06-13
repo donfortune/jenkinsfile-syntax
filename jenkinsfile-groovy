@@ -37,6 +37,7 @@ pipeline {
         }
 
         stage('Deploy') {
+            #option 1 to get user input.
             input {
                 message "select the environment to deploy to"
                 ok "Environment Selected!"
@@ -48,9 +49,12 @@ pipeline {
             steps {
 
                 script {
+                    #option 2 to get user input. can be used globally
+                    env.ENV = input message: 'Select the environment to deploy to', parameters: [choice(name: 'ENV', choices: ['Dev', 'Prod', 'Testing'], description: 'ENV TO DEPLOY')]
                     groovy.deployApp()
                     echo "Deploying to ${ONE} "
                     echo "Deploying to ${TWO} "
+                    echo "Deploying to ${ENV} "
                 }
             }
         }

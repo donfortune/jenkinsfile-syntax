@@ -1,0 +1,64 @@
+CODE_CHANGES = getCodeChanges()
+pipeline {
+    agent any
+    environment {
+        NEW_VERSION = "1.3.0"
+        SERVER_CREDENTIALS = credentials('ID FROM JENKINS CREDENTIALS UI')
+    }
+    stages {
+        when {
+            expression {
+                BRANCH_NAME == "dev" && CODE_CHANGES == "true"
+            }
+        
+            }
+        }
+        stage("build") {
+            steps {
+                echo "Building the project"
+                echo "building version ${NEW_VERSION}"
+            }
+        }
+
+        stage("test") {
+            when {
+                expression {
+                BRANCH_NAME == "dev" || BRANCH_NAME == "master"
+                }
+            }
+            steps {
+                echo    
+            }
+        }
+
+        stage("deploy") {
+            steps {
+                echo "Deploying the project"
+            }
+        }
+
+        stage() {
+            steps {
+                
+            }
+        }
+
+        post {
+        always {
+            echo "This will always run"
+        }
+        success {
+            echo "This will run only if successful"
+        }
+        failure {
+            echo "This will run only if failed"
+        }
+        unstable {
+            echo "This will run only if the run was unstable"
+        }
+        changed {
+            echo "This will run only if the state of the Pipeline has changed"
+        }
+    }
+
+ # LOCATION OF ALL JENKINS DEFAULT ENV VARIBALES: URL/env-vars.html
